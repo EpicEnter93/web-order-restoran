@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Masuk</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white p-6 rounded shadow-lg w-full max-w-xl">
+    <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">📥 Data Order Masuk</h1>
+
+    <div id="order-container" class="space-y-4">
+      <!-- Data order akan ditampilkan di sini -->
+    </div>
+  </div>
+
+  <script>
+    // Ambil parameter dari URL (form POST bisa diubah jadi GET untuk testing)
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const items = urlParams.get("items")?.split("\n") || [];
+    const total = urlParams.get("total") || "0";
+    const paymentMethod = urlParams.get("paymentMethod") || "-";
+
+    const container = document.getElementById("order-container");
+
+    if (items.length === 0 || total === "0") {
+      container.innerHTML = `<p class='text-red-500'>Belum ada data order yang diterima.</p>`;
+    } else {
+      container.innerHTML = `
+        <div class="bg-gray-100 p-4 rounded">
+          <h2 class="text-lg font-semibold mb-2">📦 Pesanan:</h2>
+          <ul class="list-disc pl-5 text-gray-700">
+            ${items.map(item => `<li>${item}</li>`).join("")}
+          </ul>
+        </div>
+
+        <div class="mt-4 p-4 bg-blue-100 rounded">
+          <p class="text-lg font-bold">Total: Rp ${parseInt(total).toLocaleString("id-ID")}</p>
+          <p class="text-gray-700">Metode Pembayaran: <strong>${paymentMethod}</strong></p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
